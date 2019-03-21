@@ -36,7 +36,6 @@ export function setLanguage(lang: Languages) {
     strings.setLanguage(lang);
 }
 
-
 // From https://gist.github.com/mirontoli/4722797 by @mirontoli
 /**
  * @author Phil Teare
@@ -48,6 +47,7 @@ export function getLanguageNativeName(lang: Languages) {
     const nativeName = nativeNames.split(',')[0];
     return nativeName;
 }
+
 
 const isoLangs = {
     'ab': {

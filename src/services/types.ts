@@ -6,6 +6,8 @@ export interface ReduxState {
     shops: ShopState,
     lang: Languages,
     view: ViewState,
+    date: string,
+    value: any
 }
 
 export type AuthState = LoginStatus<AuthInfo>;

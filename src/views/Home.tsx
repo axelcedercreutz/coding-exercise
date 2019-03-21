@@ -16,7 +16,7 @@ import { strings } from 'localization';
 interface StateToProps {
   lang: Languages,
   view: ViewState,
-  shops: ShopState
+  shops: ShopState,
 }
 
 interface DispatchProps {

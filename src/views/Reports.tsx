@@ -6,16 +6,31 @@ import { ReduxState } from 'services/types';
 import { RemoteData, InStoreApi, ShopApi } from 'common/types';
 import Container from 'components/Container';
 import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import DatePicker from '../components/DateRangePicker';
+import CardComponent from '../components/Card';
+import { updateValue } from 'actions';
+
+
+interface DispatchProps {
+    updateValue: (value: any) => void,
+}
+
+interface StateToProps {
+    value: any,
+    shop: ShopApi,
+}
 
 interface State {
     rentals: RemoteData<InStoreApi[]>,
 }
 
-interface StateToProps {
-    shop: ShopApi,
-}
-
-type Props = StateToProps & WithStyles<typeof styles>;
+type Props = StateToProps & DispatchProps & WithStyles<typeof styles>;
 
 class Reports extends React.Component<Props, State> {
 
@@ -32,15 +47,20 @@ class Reports extends React.Component<Props, State> {
 
     getRentals() {
         const shopId = this.props.shop.id;
+        const date = this.props.value;
+        console.log(date);
         const rentalsRef = db.collection('rentals')
             .where('shopId', '==', shopId)
+            .where('endDate', '<=', '2019-01-13T15:45:27.196Z')
             .where('rentalState', '==', 'COMPLETED')
             .orderBy('endDate', 'asc');
         rentalsRef.get().then((querySnapshot) => {
             const rentalList: InStoreApi[] = [];
             for (const rentalDoc of querySnapshot.docs) {
                 const rental = rentalDoc.data() as InStoreApi;
-                rentalList.push(rental);
+                if (rental.startDate >= '2019-01-12T15:45:27.196Z') {
+                    rentalList.push(rental);
+                }
             }
             const rentals: RemoteData<InStoreApi[]> = { kind: 'FETCHED', data: rentalList };
             this.setState({
@@ -63,65 +83,105 @@ class Reports extends React.Component<Props, State> {
         if (rentals.kind === 'ERROR') {
             return <div>{rentals.error}</div>;
         }
-        
         const rentalData = rentals.data;
-
         const rentalDataRows = rentalData.map((rental) => {
             const responsiblePerson = rental.responsiblePerson;
             const name = responsiblePerson.firstName + ' ' + responsiblePerson.lastName;
-            const date = rental.endDate;
+            const startDate = new Date(rental.startDate).getTime();
+            const date = new Date(rental.endDate).getTime();
             const price = rental.charge.amount;
             const priceString = (price / 100).toFixed(2);
+            const rentType = rental.activeState;
+            const rentalLength = (date - startDate) / (60*60*1000);
             return (
-                <tr key={rental.id}>
-                    <td>{name}</td>
-                    <td>{date}</td>
-                    <td>{priceString}</td>
-                </tr>
+                <TableRow key={rental.id}>
+                    <TableCell>{name}</TableCell>
+                    <TableCell align="right">{rentalLength}</TableCell>
+                    <TableCell align="right">{priceString}</TableCell>
+                    <TableCell align="right">{rentType}</TableCell>
+                </TableRow>
             );
         });
 
         return (
-            <table>
-                <thead className={classes.leftAlign}>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-            <tbody>
-                {rentalDataRows}
-            </tbody>
-            </table>
+            <Paper className={classes.root}>
+                <Table className={classes.table}>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell align="right">Rental length (h)</TableCell>
+                        <TableCell align="right">Amount</TableCell>
+                        <TableCell align="right">Type</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rentalDataRows}
+                </TableBody>
+                </Table>
+            </Paper>
         );
     }
-
     render() {
         const classes = this.props.classes;
+
         return (
             <Container>
                 <Typography variant="h5" gutterBottom className={classes.header}>
                     Dummy report
                 </Typography>
+                < CardComponent rentals={this.state.rentals} label={'RENTALS'}/>
+                    < CardComponent rentals={this.state.rentals} label={'REVENUE'}/>
+                    < CardComponent rentals={this.state.rentals} label={'PRICE'}/>
+                    < CardComponent rentals={this.state.rentals} label={'RENTAL_LENGTH'}/>
+                <div className={classes.row}>
+                        <DatePicker />
+                </div>
                 {this.renderRentals()}
             </Container>
         );
     }
 }
 
-const mapStateToProps = ({ shops}: ReduxState): StateToProps => {
-    const { activeShop } = shops;
-    return { shop: activeShop! };
-};
-
 const styles = (theme: Theme) => createStyles({
     header: {
         marginBottom: 32,
     },
+    datepics: {
+        width: '50%' ,
+        display: 'inline-block',
+        textAlign: 'center',
+    },
+    row: {
+        width: '100%',
+        display: 'inline-block',
+    },
+    width40: {
+        width: '40%',
+        display: 'inline-block',
+        margin: '0 5%',
+    },
     leftAlign: {
         textAlign: 'left',
     },
+    root: {
+        width: '100%',
+        marginTop: theme.spacing.unit * 3,
+        overflowX: 'auto',
+      },
+      table: {
+        minWidth: 400,
+    },
+    red: {
+        color: '#ff0000' ,
+    },
+    default: {
+        color: theme.palette.text.primary ,
+    },
 });
 
-export default withStyles(styles)(connect(mapStateToProps, {})(Reports));
+const mapStateToProps = ({ value, shops}: ReduxState): StateToProps => {
+    const { activeShop } = shops;
+    return { value , shop: activeShop! };
+};
+
+export default withStyles(styles)(connect(mapStateToProps, { updateValue })(Reports));
