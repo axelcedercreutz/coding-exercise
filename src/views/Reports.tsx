@@ -28,6 +28,8 @@ interface StateToProps {
 
 interface State {
     rentals: RemoteData<InStoreApi[]>,
+    startDate: string,
+    endDate: string,
 }
 
 type Props = StateToProps & DispatchProps & WithStyles<typeof styles>;
@@ -37,7 +39,10 @@ class Reports extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            rentals: { kind: 'LOADING' }
+            rentals: { kind: 'LOADING' },
+            startDate: new Date().toISOString(),
+            endDate: new Date().toISOString(),
+
         };
     }
 
@@ -47,20 +52,18 @@ class Reports extends React.Component<Props, State> {
 
     getRentals() {
         const shopId = this.props.shop.id;
-        const date = this.props.value;
-        console.log(date);
         const rentalsRef = db.collection('rentals')
             .where('shopId', '==', shopId)
-            .where('endDate', '<=', '2019-01-13T15:45:27.196Z')
+            .where('endDate', '<=', this.state.endDate)
             .where('rentalState', '==', 'COMPLETED')
             .orderBy('endDate', 'asc');
         rentalsRef.get().then((querySnapshot) => {
             const rentalList: InStoreApi[] = [];
             for (const rentalDoc of querySnapshot.docs) {
                 const rental = rentalDoc.data() as InStoreApi;
-                if (rental.startDate >= '2019-01-12T15:45:27.196Z') {
+                 if (rental.startDate >= this.state.startDate) {
                     rentalList.push(rental);
-                }
+                 }
             }
             const rentals: RemoteData<InStoreApi[]> = { kind: 'FETCHED', data: rentalList };
             this.setState({
@@ -91,14 +94,14 @@ class Reports extends React.Component<Props, State> {
             const date = new Date(rental.endDate).getTime();
             const price = rental.charge.amount;
             const priceString = (price / 100).toFixed(2);
-            const rentType = rental.activeState;
+            const renters = rental.shoppers.length;
             const rentalLength = (date - startDate) / (60*60*1000);
             return (
                 <TableRow key={rental.id}>
                     <TableCell>{name}</TableCell>
                     <TableCell align="right">{rentalLength}</TableCell>
+                    <TableCell align="right">{renters}</TableCell>
                     <TableCell align="right">{priceString}</TableCell>
-                    <TableCell align="right">{rentType}</TableCell>
                 </TableRow>
             );
         });
@@ -110,8 +113,8 @@ class Reports extends React.Component<Props, State> {
                     <TableRow>
                         <TableCell>Name</TableCell>
                         <TableCell align="right">Rental length (h)</TableCell>
+                        <TableCell align="right">How many persons</TableCell>
                         <TableCell align="right">Amount</TableCell>
-                        <TableCell align="right">Type</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -134,7 +137,12 @@ class Reports extends React.Component<Props, State> {
                     < CardComponent rentals={this.state.rentals} label={'PRICE'}/>
                     < CardComponent rentals={this.state.rentals} label={'RENTAL_LENGTH'}/>
                 <div className={classes.row}>
-                        <DatePicker />
+                        <DatePicker updateValue={(value: any) => {
+                            this.setState(
+                                {startDate: value.start.toISOString() , endDate: value.end.toISOString()}
+                            );
+                            this.getRentals();
+                        }} />
                 </div>
                 {this.renderRentals()}
             </Container>

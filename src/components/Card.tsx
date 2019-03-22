@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
 import { RemoteData, InStoreApi } from 'common/types';
 import Card from '@material-ui/core/Card';
-// import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Spinner from 'components/Spinner';
@@ -22,63 +21,63 @@ class CardComponent extends React.Component< Props> {
         const rentals = this.props.rentals;
         const label = this.props.label;
         if (rentals.kind === 'LOADING') {
-            return <CardContent><Spinner in={true} /></CardContent>;
+            return <CardContent><Spinner in={true} size={40} relative={true}/></CardContent>;
         }
         if (rentals.kind === 'ERROR') {
             return <div>{rentals.error}</div>;
         }
-        if (rentals.kind === 'FETCHED') {
-            const rentalAmount = rentals.data.length;
-            if (label === 'RENTALS' ) {
-                return(
-                    <CardContent>
-                        <Typography variant="h5" component="h2">Amount of rentals</Typography>
-                        <Typography component="p">{rentals.data.length}</Typography>
-                    </CardContent>
-                );
-            }
-            if (label === 'REVENUE' ) {
-                let revenue = 0;
-                rentals.data.map((rental) => {
-                    revenue += (rental.charge.amount / 100);
-                });
-                return(
-                    <CardContent>
-                        <Typography variant="h5" component="h2">Total Revenue</Typography>
-                        <Typography component="p">{revenue.toFixed(2)   }</Typography>
-                    </CardContent>
-                );
-            }
-            if (label === 'PRICE' ) {
-                let revenue = 0;
-                rentals.data.map((rental) => {
-                    revenue += (rental.charge.amount / 100);
-                });
-                const averagePrice = revenue / rentalAmount;
-                return(
-                    <CardContent>
-                        <Typography variant="h5" component="h2">Average Price</Typography>
-                        <Typography component="p">{averagePrice.toFixed(2)}</Typography>
-                    </CardContent>
-                );
-            }
-            else {
-                let averageLength = 0;
-                rentals.data.map((rental) => {
-                    const startDate = new Date(rental.startDate).getTime();
-                    const date = new Date(rental.endDate).getTime();
-                    averageLength += (date - startDate) / (60*60*1000);
-                });
-                return(
-                    <CardContent>
-                        <Typography variant="h5" component="h2">Average length (h)</Typography>
-                        <Typography component="p">{(averageLength / rentalAmount).toFixed()}</Typography>
-                    </CardContent>
-                );
-            }
+        const rentalAmount = rentals.data.length;
+        if (label === 'RENTALS' ) {
+            return(
+                <CardContent>
+                    <Typography variant="h5" component="h2">Amount of rentals</Typography>
+                    <Typography component="p">{rentals.data.length}</Typography>
+                </CardContent>
+            );
+        }
+        if (label === 'REVENUE' ) {
+            let revenue = 0;
+            rentals.data.map((rental) => {
+                revenue += (rental.charge.amount / 100);
+            });
+            return(
+                <CardContent>
+                    <Typography variant="h5" component="h2">Total Revenue</Typography>
+                    <Typography component="p">{revenue.toFixed(2)   }</Typography>
+                </CardContent>
+            );
+        }
+        if (label === 'PRICE' ) {
+            let revenue = 0;
+            rentals.data.map((rental) => {
+                revenue += (rental.charge.amount / 100);
+            });
+            const averagePrice = revenue / rentalAmount;
+            return(
+                <CardContent>
+                    <Typography variant="h5" component="h2">Average Price</Typography>
+                    <Typography component="p">{averagePrice.toFixed(2)}</Typography>
+                </CardContent>
+            );
+        }
+        if (label === 'RENTAL_LENGTH' ) {
+            let averageLength = 0;
+            rentals.data.map((rental) => {
+                const startDate = new Date(rental.startDate).getTime();
+                const date = new Date(rental.endDate).getTime();
+                averageLength += (date - startDate) / (60*60*1000);
+            });
+            return(
+                <CardContent>
+                    <Typography variant="h5" component="h2">Average length (h)</Typography>
+                    <Typography component="p">{(averageLength / rentalAmount).toFixed()}</Typography>
+                </CardContent>
+            );
         }
         return(
-            <div>Some error</div>
+            <CardContent>
+                <Typography variant="h5" component="h2">{label}</Typography>
+            </CardContent>
         );
     }
 

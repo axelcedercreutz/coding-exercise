@@ -43,12 +43,11 @@ const Spinner = (props: Props) => (
 
 const styles = (theme: Theme) => createStyles({
     wrapper: {
-        // position: 'absolute',
+        position: 'absolute',
         width: '100%',
         height: '100%',
         left: 0,
         top: 0,
-        // backgroundColor: 'inherit',
         zIndex: 10,
         display: 'flex',
         justifyContent: 'center',

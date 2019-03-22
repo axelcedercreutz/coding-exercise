@@ -32,7 +32,6 @@ interface UpdateValue {
 }
 
 export const updateValue = (value: any): UpdateValue => {
-    console.log(value);
     return {
         type: 'UPDATE_RANGE',
         value
