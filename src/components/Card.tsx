@@ -52,7 +52,10 @@ class CardComponent extends React.Component< Props> {
             rentals.data.map((rental) => {
                 revenue += (rental.charge.amount / 100);
             });
-            const averagePrice = revenue / rentalAmount;
+            let averagePrice = 0;
+            if (rentalAmount !== 0) {
+                averagePrice = revenue / rentalAmount;
+            }
             return(
                 <CardContent>
                     <Typography variant="h5" component="h2">Average Price</Typography>
@@ -67,10 +70,14 @@ class CardComponent extends React.Component< Props> {
                 const date = new Date(rental.endDate).getTime();
                 averageLength += (date - startDate) / (60*60*1000);
             });
+            let averageRental = "0";
+            if (rentalAmount !== 0) {
+                averageRental = (averageLength / rentalAmount).toFixed();
+            }
             return(
                 <CardContent>
                     <Typography variant="h5" component="h2">Average length (h)</Typography>
-                    <Typography component="p">{(averageLength / rentalAmount).toFixed()}</Typography>
+                    <Typography component="p">{averageRental}</Typography>
                 </CardContent>
             );
         }
