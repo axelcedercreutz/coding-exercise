@@ -6,7 +6,9 @@ How many hours did you spend doing the assignment?
 
 Short summary of what you built, how, and why?
 
-*  I built 2 different components: DatePicker and Card. To the DatePicker I imported a DateRangePicker from where I got the start and end date of the selected date range. With the dispatchedProps of ”updateValue” I updated the startDate and endDate of the search terms for the Firebase-query. I built the query so that it check that the endDate is before or same as the range’s endDate and then from the received list I only chose the ones that had a startDate same or later than the chosen range’s startDate.
+* I built 2 different components: DatePicker and Card.
+
+* To the DatePicker I imported a DateRangePicker from where I got the start and end date of the selected date range. With the dispatchedProps of ”updateValue” I updated the startDate and endDate of the search terms for the Firebase-query. I built the query so that it check that the endDate is before or same as the range’s endDate and then from the received list I only chose the ones that had a startDate same or later than the chosen range’s startDate.
 
 * I chose to use DateRangePicker for two reasons: 1) easiest way to get both the start- and endDate 2) it looked better with just one calendar.
 
