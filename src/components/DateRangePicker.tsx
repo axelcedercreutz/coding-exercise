@@ -29,6 +29,8 @@ class DatePicker extends React.Component<Props, State> {
         this.onSelect = this.onSelect.bind(this);
     }
     onSelect(value: any) {
+        value.start = value.start.subtract(22, 'hours');
+        value.end = value.end.add(2, 'hours');
         this.setState({ value });
         this.props.updateValue(value);
     }
