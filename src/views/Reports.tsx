@@ -22,7 +22,6 @@ interface DispatchProps {
 }
 
 interface StateToProps {
-    value: any,
     shop: ShopApi,
 }
 
@@ -187,9 +186,9 @@ const styles = (theme: Theme) => createStyles({
     },
 });
 
-const mapStateToProps = ({ value, shops}: ReduxState): StateToProps => {
+const mapStateToProps = ({ shops}: ReduxState): StateToProps => {
     const { activeShop } = shops;
-    return { value , shop: activeShop! };
+    return { shop: activeShop! };
 };
 
 export default withStyles(styles)(connect(mapStateToProps, { updateValue })(Reports));

@@ -70,14 +70,14 @@ class CardComponent extends React.Component< Props> {
                 const date = new Date(rental.endDate).getTime();
                 averageLength += (date - startDate) / (60*60*1000);
             });
-            let averageRental = "0";
+            let averageRental = 0;
             if (rentalAmount !== 0) {
-                averageRental = (averageLength / rentalAmount).toFixed();
+                averageRental = (averageLength / rentalAmount);
             }
             return(
                 <CardContent>
                     <Typography variant="h5" component="h2">Average length (h)</Typography>
-                    <Typography component="p">{averageRental}</Typography>
+                    <Typography component="p">{averageRental.toFixed()}</Typography>
                 </CardContent>
             );
         }
