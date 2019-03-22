@@ -24,7 +24,7 @@ Was there some parts of the exercise that were challenging, or you could not do?
 
 If you had more time, what would you develop more for your Reporting view?
 
-* top 5 most sold items, top 5 least used items, expandable accordion for each order so that you can see all the data, how many items were out at the exactly same time, graph of how the rentals have occurred during the selected time period, 
+* top 5 most sold items, top 5 least used items, expandable accordion for each order so that you can see all the data, how many items were out at the exactly same time, graph of how the rentals have occurred during the selected time period, and so on and so on..
 
 
 Which technologies/libraries/frameworks in the coding exercise were new to you, and which were you already familiar with? What was your first impression of the new technologies that you tried?
