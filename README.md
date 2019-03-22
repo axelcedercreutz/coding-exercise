@@ -1,24 +1,19 @@
 ## Rentle coding exercise
 
-### Introduction to the exercise
+* How many hours did you spend doing the assignment? around 12h, but it didn’t feel like that long!
+* Short summary of what you built, how, and why. - I built 2 different components: DatePicker and Card. To the DatePicker I imported a DateRangePicker from where I got the start and end date of the selected date range. With the dispatchedProps of ”updateValue” I updated the startDate and endDate of the search terms for the Firebase-query. I built the query so that it check that the endDate is before or same as the range’s endDate and then from the received list I only chose the ones that had a startDate same or later than the chosen range’s startDate.
+	- I chose to use DateRangePicker for two reasons: 1) easiest way to get both the start- and endDate 2) it looked better with just one calendar.
+	- For the Card I sent a props with the specific label so that I could with if-statements choose what to display in the chosen card. 
+* Tell about your process: how did you get familiar with the existing code, where did you start first, which parts of the exercise did you focus on the most? - I started by looking at how the overall layout of the application was made and how it was segmented. Then I first looked at the views to get an understanding of how the report-view was built. After getting an understanding of how the report-view was built I started working on the DateRange picker, the part that I focused most of my time on. When I got stuck with the date range picker I created the Card component to get the most important data highlighted to the top of the page and then worked on the table view. After all that was done I focused my energy on getting the Date range picker to work and finished it.
+* Was there some parts of the exercise that were challenging, or you could not do? What took most of your time? - By far the most time took to get a date range picker working. I just couldn’t figure out how to get one working properly. I feel that i must have tried almost all of the possible pickers… :D Then getting the dates from the picker to the report was hard because of the unfamiliar stack. I ended up doing it straight with react since I couldn’t figure out how to do it with redux in a working matter. I also had to use a class of any since I couldn’t get the DateRange-type added. I also didn’t have time to come up with an effective way of getting the most popular product, so I decided to scratch it from my todo.
+* If you had more time, what would you develop more for your Reporting view? - top 5 most sold items, top 5 least used items, expandable accordion for each order so that you can see all the data, how many items were out at the exactly same time, graph of how the rentals have occurred during the selected time period, 
+* Which technologies/libraries/frameworks in the coding exercise were new to you, and which were you already familiar with?
+    * What was your first impression of the new technologies that you tried?
+    - almost all of it was relatively new. The date range picker was totally new. I have used very little Typescript (some at Trimble) so that was a challenge for me. I definitely liked it, since it is very precise in what and how you can write. 
+* Was there something in the database architecture of the rentals that was odd or that you would change to make it easier to compose data for the Reporting view? - nothing odd, I would’ve preferred a shorter route to the rented items since it didn’t feel optimal to go through each renter to find all the rented items for each order, but that’s just a preference.
+* Any other comments about the existing code or about the exercise? - I felt that the exercise gave a fairly good overview of what developing with your stack could look like. I liked it, even though I’m sure I haven’t been able to follow the best practices in every part.
+* Feedback to us: How did you like the coding exercise? What could we improve in it? - Static dataset could be good. There’s nothing wrong with doing the queries to Firebase, but it might be a waste of your resources.
 
-Welcome to Rentle's code exercise! We have tried to create an exercise that follows the main technologies that are currently in use at Rentle for you to see that with which kind of technologies we currently work with, and you could potentially too. We hope that you learn something new while doing this exercise.
-
-We don't want that you feel overwhelmed about the amount of work you need to do for the exercise. It is okay to spend just a few hours for this, and we hope that you would not spend more than 8 hours. If you absolutely want to do more, then sure go ahead! But we don't expect it in any way. 
-
-Also, if you do not have a lot of time available, you can also do only a subsection of the exercise, and write down how you would have done the other parts or extend your solution.
-
-Remember, if there are any questions that come to your mind, or you face any issues that you are struggling with, you can always ask us for information or help.
-
-### Project structure
-
-The exercise project is created with `create-react-app-typescript`.
-The main technologies used in the project are Typescript, React, Redux, React Router, Firebase and Material UI. For styling, the project uses JSS.
-
-The project has a basic structure in place with examples of some views, components, actions and reducers.
-There is a basic authentication logic in place and logic to fetch the correct shop and rentals data for the signed in user, in addition with some basic views and components done. If you have some issues, you can try to look for examples from these files.
-
-The needed interfaces for Typescript types should also be in `common/types` and `services/types` files.
 
 ### Case description
 
@@ -80,38 +75,3 @@ Clone this repository and make all the changes to your own repository that you p
 When you are ready to submit, send us an email to `founders@rentle.io` to let us know that you have submitted the exercise. If the solution is in a public repository, give us the URL for the repository. If it is in a private repository in GitHub, invite also `tooga` GitHub username as a collaborator. If it is in some other platform, give us instructions on how to access your submitted solution.
 
 Remember to answer to the questions in the readme. You can either send them to us in the submit email, or write them directly to your readme file.
-
-### Additional information
-
-When implementing the code exercise, there are no requirements to modify the already written code in other places than in the Reports view.
-However, if you want to change the current code structure or change the existing code somehow, you are free to do so.
-
-##### Typescript
-You can see the data structure of the rentals from the `InStoreAPI` interface from the `common/types` file. The other needed data should also be already typed.
-If you have issues with Typescript type errors, and cannot fix them, the last thing to fix them is to set the asked type as `any`. Then the Typescript will not give an error of the wrong type. Still, we encourage you not to use `any` types if you can.
-
-### Contacting in case of errors or questions
-If you encounter any issues or questions that you would need help with, or would help you to do the exercise, please be in contact with us.
-We do not expect you to know everything in advance or to learn very complicated things for the sake of the exercise. Just like in a normal developing environment, if you encounter things that you need help with to proceed, send us an email to `founders@rentle.io` or contact `@toomask` in Telegram.
-
-### Final questions to answer after submitting
-
-- How many hours did you spend doing the assignment?
-
-- Short summary of what you built, how, and why.
-
-- Tell about your process: how did you get familiar with the existing code, where did you start first, which parts of the excercise did you focus on the most?
-
-- Was there some parts of the exercise that were challenging, or you could not do? What took most of your time?
-
-- If you had more time, what would you develop more for your Reporting view?
-
-- Which technologies/libraries/frameworks in the coding exercise were new to you, and which were you already familiar with?
-
-  - What was your first impression of the new technologies that you tried?
-
-- Was there something in the database architecture of the rentals that was odd or that you would change to make it easier to compose data for the Reporting view?
-
-- Any other comments about the existing code or about the exercise?
-
-- Feedback to us: How did you like the coding excercise? What could we improve in it?
